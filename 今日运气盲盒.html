@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#0a0820">
+<title>今日运气 · 星语盲盒 ✨</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    width: 100%; min-height: 100vh; overflow-x: hidden;
+    -webkit-user-select: none; user-select: none;
+    font-family: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif CN", "PingFang SC", "Microsoft YaHei", serif;
+    color: #fef7e0;
+    background: #0a0820;
+  }
+
+  /* ============ 宇宙背景 ============ */
+  .cosmos {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(120, 80, 200, 0.35) 0%, transparent 45%),
+      radial-gradient(ellipse at 80% 85%, rgba(200, 100, 150, 0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(60, 40, 120, 0.4) 0%, transparent 60%),
+      linear-gradient(180deg, #0a0820 0%, #1a0f3a 50%, #0d0625 100%);
+    overflow: hidden;
+  }
+  .cosmos::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #ffffff, transparent),
+      radial-gradient(1px 1px at 28% 73%, #ffd9a8, transparent),
+      radial-gradient(2px 2px at 45% 25%, #ffffff, transparent),
+      radial-gradient(1px 1px at 62% 88%, #c8b6ff, transparent),
+      radial-gradient(1px 1px at 78% 35%, #ffffff, transparent),
+      radial-gradient(2px 2px at 88% 62%, #ffd9a8, transparent),
+      radial-gradient(1px 1px at 8% 55%, #ffffff, transparent),
+      radial-gradient(1px 1px at 35% 12%, #ffffff, transparent),
+      radial-gradient(1px 1px at 92% 8%, #c8b6ff, transparent),
+      radial-gradient(1px 1px at 55% 65%, #ffffff, transparent),
+      radial-gradient(2px 2px at 18% 92%, #ffd9a8, transparent),
+      radial-gradient(1px 1px at 70% 15%, #ffffff, transparent);
+    background-size: 100% 100%;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  .cosmos::after {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 65% 80%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 85% 25%, rgba(255,217,168,0.6), transparent),
+      radial-gradient(1px 1px at 15% 75%, rgba(200,182,255,0.6), transparent),
+      radial-gradient(1px 1px at 50% 5%, rgba(255,255,255,0.6), transparent);
+    animation: twinkle 6s ease-in-out infinite reverse;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 0.4; }
+  }
+
+  /* 流星 */
+  .meteor {
+    position: absolute; width: 2px; height: 2px;
+    background: linear-gradient(45deg, #fff, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px 2px rgba(255,255,255,0.8);
+    animation: meteor-fall 6s linear infinite;
+    opacity: 0;
+  }
+  .meteor::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8));
+    transform-origin: left center;
+    transform: rotate(180deg);
+  }
+  .meteor:nth-child(1) { top: 10%; left: 80%; animation-delay: 0s; }
+  .meteor:nth-child(2) { top: 30%; left: 60%; animation-delay: 3s; }
+  .meteor:nth-child(3) { top: 5%; left: 30%; animation-delay: 6s; }
+  @keyframes meteor-fall {
+    0% { opacity: 0; transform: translate(0, 0) rotate(45deg); }
+    5% { opacity: 1; }
+    20% { opacity: 1; }
+    30% { opacity: 0; transform: translate(-200px, 200px) rotate(45deg); }
+    100% { opacity: 0; transform: translate(-200px, 200px) rotate(45deg); }
+  }
+
+  /* ============ 主舞台 ============ */
+  .stage {
+    position: relative; z-index: 2;
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 32px 20px 60px;
+  }
+
+  .header {
+    text-align: center; margin-bottom: 30px;
+    animation: fadeDown 1s ease-out;
+  }
+  .header .ornament {
+    color: #f4c430; font-size: 14px; letter-spacing: 8px;
+    opacity: 0.8; margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 26px; font-weight: 400; letter-spacing: 6px;
+    background: linear-gradient(180deg, #fff7d4 0%, #f4c430 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(244,196,48,0.3);
+  }
+  .header .sub {
+    color: #c8b6ff; font-size: 12px; letter-spacing: 3px;
+    margin-top: 10px; opacity: 0.7;
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ 水晶球 / 盲盒 ============ */
+  .orb-wrap {
+    position: relative; width: 240px; height: 240px;
+    margin: 20px 0; cursor: pointer;
+    animation: floatY 4s ease-in-out infinite;
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .orb-glow {
+    position: absolute; inset: -40px;
+    background: radial-gradient(circle, rgba(244,196,48,0.4) 0%, rgba(244,196,48,0.15) 30%, transparent 60%);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .orb {
+    position: relative; width: 100%; height: 100%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 30%),
+      radial-gradient(circle at 60% 60%, rgba(244,196,48,0.5), rgba(180,80,180,0.4) 40%, rgba(60,30,120,0.7) 70%, rgba(20,10,60,0.9) 100%);
+    box-shadow:
+      inset 0 0 60px rgba(255,255,255,0.15),
+      inset 0 -30px 60px rgba(40,20,80,0.6),
+      0 0 60px rgba(244,196,48,0.5),
+      0 0 100px rgba(180,80,180,0.3);
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 2, 0.6, 1);
+  }
+  .orb:hover { transform: scale(1.05); }
+  .orb:active { transform: scale(0.96); }
+
+  .orb-shake { animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-4px, 2px) rotate(-2deg); }
+    20% { transform: translate(5px, -1px) rotate(2deg); }
+    30% { transform: translate(-3px, 3px) rotate(-1deg); }
+    40% { transform: translate(4px, 0) rotate(1deg); }
+    50% { transform: translate(-5px, 2px) rotate(-2deg); }
+    60% { transform: translate(3px, -3px) rotate(2deg); }
+    70% { transform: translate(-2px, 4px) rotate(-1deg); }
+    80% { transform: translate(4px, -2px) rotate(1deg); }
+    90% { transform: translate(-3px, 1px) rotate(-1deg); }
+  }
+
+  /* 球内星辰 */
+  .orb-stars {
+    position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
+  }
+  .orb-stars::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 25% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 50%, #ffd9a8, transparent),
+      radial-gradient(2px 2px at 40% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 25%, #c8b6ff, transparent),
+      radial-gradient(1px 1px at 20% 80%, #fff, transparent),
+      radial-gradient(1px 1px at 70% 80%, #ffd9a8, transparent);
+    animation: rotate 20s linear infinite;
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* 球内符文 */
+  .orb-rune {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 60px;
+    background: linear-gradient(135deg, #fff7d4, #f4c430);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 8px rgba(244,196,48,0.6));
+    animation: runePulse 3s ease-in-out infinite;
+  }
+  @keyframes runePulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.08); opacity: 1; }
+  }
+
+  /* 漂浮颗粒 */
+  .particle {
+    position: absolute; width: 4px; height: 4px;
+    background: #f4c430; border-radius: 50%;
+    box-shadow: 0 0 6px #f4c430;
+    pointer-events: none;
+  }
+
+  .hint {
+    color: #fef7e0; font-size: 14px; letter-spacing: 4px;
+    margin-top: 30px; opacity: 0.85;
+    animation: breathe 2s ease-in-out infinite;
+  }
+  .hint::before { content: '☞ '; color: #f4c430; }
+  .hint::after { content: ' ☜'; color: #f4c430; }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ============ 运势卡片 ============ */
+  .card-overlay {
+    position: fixed; inset: 0; z-index: 10;
+    background: rgba(10, 8, 32, 0.85);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    overflow-y: auto;
+  }
+  .card-overlay.show { display: flex; opacity: 1; }
+
+  .card {
+    position: relative;
+    width: 100%; max-width: 360px;
+    background:
+      linear-gradient(135deg, rgba(255,247,212,0.05), rgba(244,196,48,0.08)),
+      linear-gradient(180deg, #1a1235 0%, #2a1850 100%);
+    border: 1px solid rgba(244,196,48,0.4);
+    border-radius: 24px;
+    padding: 30px 26px 26px;
+    box-shadow:
+      0 0 40px rgba(244,196,48,0.3),
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+    transform: scale(0.7) translateY(40px);
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .card-overlay.show .card { transform: scale(1) translateY(0); opacity: 1; }
+
+  /* 卡片角饰 */
+  .corner {
+    position: absolute; width: 24px; height: 24px;
+    border: 1.5px solid #f4c430; opacity: 0.7;
+  }
+  .corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+  .corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+  .corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+  .corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+
+  .card-header {
+    text-align: center; padding-bottom: 16px;
+    border-bottom: 1px dashed rgba(244,196,48,0.25);
+  }
+  .card-header .deco { color: #f4c430; font-size: 11px; letter-spacing: 6px; opacity: 0.7; }
+  .card-header .date { color: #c8b6ff; font-size: 12px; letter-spacing: 2px; margin-top: 4px; opacity: 0.8; }
+
+  .level-wrap {
+    text-align: center; padding: 22px 0 18px;
+  }
+  .level-tag {
+    display: inline-block; padding: 4px 14px;
+    border: 1px solid rgba(244,196,48,0.4); border-radius: 100px;
+    color: #f4c430; font-size: 11px; letter-spacing: 4px;
+    margin-bottom: 14px;
+  }
+  .level-text {
+    font-size: 56px; font-weight: 500; letter-spacing: 8px;
+    background: linear-gradient(180deg, #fff7d4 0%, #f4c430 60%, #d49520 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(244,196,48,0.5);
+    line-height: 1.1;
+  }
+  .level-emoji { font-size: 32px; margin-top: 6px; -webkit-text-fill-color: initial; }
+  .level-quote {
+    color: #fef7e0; font-size: 14px; letter-spacing: 2px;
+    margin-top: 14px; opacity: 0.85; line-height: 1.7;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 18px;
+  }
+  .item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(244,196,48,0.15);
+    border-radius: 12px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .item .label {
+    color: #c8b6ff; font-size: 11px; letter-spacing: 2px; opacity: 0.7;
+  }
+  .item .value {
+    color: #fef7e0; font-size: 16px; letter-spacing: 1px;
+    margin-top: 6px; font-weight: 500;
+  }
+  .item .swatch {
+    display: inline-block; width: 12px; height: 12px;
+    border-radius: 50%; margin-right: 6px;
+    vertical-align: middle;
+    box-shadow: 0 0 8px currentColor;
+  }
+  .item.full {
+    grid-column: 1 / 3;
+    text-align: left; padding: 12px 14px;
+  }
+  .item.full .value { font-size: 14px; line-height: 1.6; margin-top: 4px; }
+
+  .yi-ji {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
+  }
+  .yi-ji .item .label.yi { color: #8de0a8; }
+  .yi-ji .item .label.ji { color: #f5a09b; }
+
+  .footer-tip {
+    text-align: center; margin-top: 22px;
+    color: #c8b6ff; font-size: 11px; letter-spacing: 2px; opacity: 0.6;
+  }
+
+  .actions {
+    display: flex; gap: 10px; margin-top: 18px;
+  }
+  .btn {
+    flex: 1; padding: 12px;
+    border: 1px solid rgba(244,196,48,0.4);
+    border-radius: 12px;
+    background: rgba(244,196,48,0.08);
+    color: #fef7e0;
+    font-family: inherit; font-size: 14px; letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn:active { transform: scale(0.96); background: rgba(244,196,48,0.18); }
+  .btn.primary {
+    background: linear-gradient(135deg, rgba(244,196,48,0.3), rgba(244,196,48,0.15));
+    border-color: rgba(244,196,48,0.6);
+  }
+
+  /* ============ 爆炸粒子 ============ */
+  .burst {
+    position: fixed; pointer-events: none; z-index: 5;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #f4c430;
+    box-shadow: 0 0 10px #f4c430;
+  }
+
+  .footer-text {
+    position: absolute; bottom: 20px; left: 0; right: 0;
+    text-align: center; color: #c8b6ff;
+    font-size: 11px; letter-spacing: 3px; opacity: 0.4;
+  }
+
+  @media (max-height: 700px) {
+    .orb-wrap { width: 200px; height: 200px; }
+    .orb-rune { font-size: 50px; }
+    .header h1 { font-size: 22px; }
+  }
+  @media (max-width: 350px) {
+    .level-text { font-size: 46px; letter-spacing: 6px; }
+    .card { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+  <div class="cosmos">
+    <div class="meteor"></div>
+    <div class="meteor"></div>
+    <div class="meteor"></div>
+  </div>
+
+  <div class="stage">
+    <div class="header">
+      <div class="ornament">· ✦ · ✦ · ✦ ·</div>
+      <h1>星 语 盲 盒</h1>
+      <div class="sub">— 今日运气 · 拆开看看 —</div>
+    </div>
+
+    <div class="orb-wrap" id="orb">
+      <div class="orb-glow"></div>
+      <div class="orb">
+        <div class="orb-stars"></div>
+        <div class="orb-rune">運</div>
+      </div>
+    </div>
+
+    <div class="hint">轻轻戳一戳水晶球</div>
+
+    <div class="footer-text">✨ 长按截图 · 分享好运给朋友 ✨</div>
+  </div>
+
+  <!-- 卡片弹层 -->
+  <div class="card-overlay" id="overlay">
+    <div class="card">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+
+      <div class="card-header">
+        <div class="deco">· 今 日 运 势 ·</div>
+        <div class="date" id="dateText"></div>
+      </div>
+
+      <div class="level-wrap">
+        <div class="level-tag" id="levelTag">運</div>
+        <div class="level-text" id="levelText">大吉</div>
+        <div class="level-emoji" id="levelEmoji">🌟</div>
+        <div class="level-quote" id="levelQuote">今日有好事，等你撞见</div>
+      </div>
+
+      <div class="grid">
+        <div class="item">
+          <div class="label">幸运色</div>
+          <div class="value">
+            <span class="swatch" id="colorSwatch" style="background:#f4c430;color:#f4c430;"></span>
+            <span id="colorText">鎏金色</span>
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">幸运数字</div>
+          <div class="value" id="numberText">8</div>
+        </div>
+        <div class="item">
+          <div class="label">幸运方位</div>
+          <div class="value" id="directionText">东南</div>
+        </div>
+        <div class="item">
+          <div class="label">能量指数</div>
+          <div class="value" id="energyText">★★★★☆</div>
+        </div>
+      </div>
+
+      <div class="yi-ji">
+        <div class="item">
+          <div class="label yi">· 今 日 宜 ·</div>
+          <div class="value" id="yiText">微笑</div>
+        </div>
+        <div class="item">
+          <div class="label ji">· 今 日 忌 ·</div>
+          <div class="value" id="jiText">熬夜</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:12px;">
+        <div class="item full">
+          <div class="label">幸运歌曲 ♪</div>
+          <div class="value" id="songText">《晴天》— 周杰伦</div>
+        </div>
+        <div class="item full">
+          <div class="label">星语心愿</div>
+          <div class="value" id="wishText">你值得所有美好。</div>
+        </div>
+      </div>
+
+      <div class="footer-tip">— 长 按 截 图 · 转 发 给 想 念 的 人 —</div>
+
+      <div class="actions">
+        <button class="btn" id="closeBtn">收 起</button>
+        <button class="btn primary" id="redrawBtn">再 抽 一 次</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // ===== 数据库 =====
+  const fortunes = [
+    { level: '上上签', emoji: '🌟', weight: 5, color: '#FFD700',
+      quotes: ['万事顺心，今日属于你', '光环加身，宇宙在为你让路', '你的好运排着队来了'] },
+    { level: '锦鲤签', emoji: '🐟', weight: 3, color: '#FF6B9D',
+      quotes: ['你就是今天的天选锦鲤', '今天伸手抓抓，运气都是你的', '锦鲤附体，逢考必过逢赌必赢'] },
+    { level: '大吉', emoji: '🎉', weight: 12, color: '#FF8C42',
+      quotes: ['大吉大利，今晚吃鸡', '云开见月，好事将至', '今天的太阳是为你升起的'] },
+    { level: '中吉', emoji: '✨', weight: 18, color: '#A78BFA',
+      quotes: ['今日有好事，等你撞见', '惊喜在路上，记得保持期待', '小确幸藏在某个转角'] },
+    { level: '小吉', emoji: '🍀', weight: 22, color: '#86EFAC',
+      quotes: ['幸运在悄悄向你靠近', '一切都在朝好的方向发展', '今天会有一件让你笑的事'] },
+    { level: '平签', emoji: '☁️', weight: 20, color: '#93C5FD',
+      quotes: ['平凡的日子也藏着小惊喜', '稳稳当当，岁月悠长', '不疾不徐，自有节奏'] },
+    { level: '末吉', emoji: '🌙', weight: 12, color: '#C4B5FD',
+      quotes: ['今天宜放空，明天再战', '休息也是一种生产力', '允许自己什么都不想做'] },
+    { level: '凶签', emoji: '🌧️', weight: 6, color: '#9CA3AF',
+      quotes: ['命运给你考验，你给命运反击', '今天打个盹，运气重启中', '低谷就是上坡的开始'] },
+    { level: '大凶', emoji: '⚡', weight: 2, color: '#F87171',
+      quotes: ['物极必反，最坏只是新开始', '抽到我说明你下一签必是上上签', '历劫之后必成大器'] }
+  ];
+
+  const colors = [
+    { name: '鎏金色', hex: '#F4C430' },
+    { name: '蜜桃粉', hex: '#FFB3BA' },
+    { name: '薄荷绿', hex: '#98FF98' },
+    { name: '黛紫色', hex: '#9F8DD8' },
+    { name: '牛仔蓝', hex: '#5B7FB9' },
+    { name: '落日橙', hex: '#FF8C42' },
+    { name: '深海蓝', hex: '#1E4D6B' },
+    { name: '樱花粉', hex: '#FFB7C5' },
+    { name: '抹茶绿', hex: '#A4C293' },
+    { name: '月牙白', hex: '#FAF3DD' },
+    { name: '玫瑰金', hex: '#E0BFB8' },
+    { name: '雾霾蓝', hex: '#A8B5C7' },
+    { name: '焦糖色', hex: '#C68642' },
+    { name: '丁香紫', hex: '#C8A2C8' },
+    { name: '青瓷色', hex: '#88B7B5' },
+    { name: '柿子红', hex: '#E8553E' }
+  ];
+
+  const directions = ['正东', '正南', '正西', '正北', '东南', '西南', '东北', '西北'];
+
+  const yiList = [
+    '微笑', '吃甜食', '早点睡', '打电话', '散步', '听音乐', '喝热水',
+    '认真摸鱼', '夸夸自己', '收拾房间', '看个电影', '尝试新事物',
+    '主动出击', '深呼吸', '晒太阳', '泡澡', '点外卖', '看风景',
+    '多喝水', '存零花钱', '记账', '运动一下', '阅读', '冥想'
+  ];
+
+  const jiList = [
+    '熬夜', '内耗', '冲动消费', '空腹喝奶茶', '玻璃心', '过度自责',
+    '答应不想做的事', '回复前任', '查看朋友圈', '比较自己', '硬撑',
+    '吃太多糖', '久坐', '负面思考', '生闷气', '过度反省',
+    '忽略身体信号', '卷自己', '盯着体重秤', '深夜下单', '空想'
+  ];
+
+  const songs = [
+    '《晴天》— 周杰伦', '《起风了》— 买辣椒也用券', '《孤勇者》— 陈奕迅',
+    '《漠河舞厅》— 柳爽', '《海阔天空》— Beyond', '《夜空中最亮的星》— 逃跑计划',
+    '《追光者》— 岑宁儿', '《光年之外》— 邓紫棋', '《稻香》— 周杰伦',
+    '《十年》— 陈奕迅', '《突然好想你》— 五月天', '《下雨天》— 南拳妈妈',
+    '《七里香》— 周杰伦', '《后来》— 刘若英', '《童话》— 光良',
+    '《岁月神偷》— 金玟岐', '《青花瓷》— 周杰伦', '《我们的歌》— 王力宏'
+  ];
+
+  const wishes = [
+    '你值得所有美好',
+    '愿所求皆所愿，所行化坦途',
+    '小宇宙正在偷偷为你充能',
+    '世界很温柔，你也是',
+    '今天没解决的事，明天会有答案',
+    '你已经做得很好了，真的',
+    '愿你成为自己的太阳，无需凭借谁的光',
+    '生活会回报每一个认真生活的人',
+    '人间值得，你也是',
+    '愿你眼中有光，心中有梦',
+    '所有的好事都在路上',
+    '允许一切发生，结果都是最好的安排',
+    '风会记得每一朵花的香',
+    '愿你慢慢长大，慢慢勇敢',
+    '宇宙的能量正在向你倾斜',
+    '今天的你，比昨天更好一点',
+    '你正走在你自己的轨道上，闪闪发光',
+    '愿你被这个世界温柔以待'
+  ];
+
+  // ===== 加权随机 =====
+  function weightedPick(list){
+    const total = list.reduce((s,i)=>s+i.weight, 0);
+    let r = Math.random() * total;
+    for (const item of list){
+      if ((r -= item.weight) < 0) return item;
+    }
+    return list[0];
+  }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function generateFortune(){
+    const f = weightedPick(fortunes);
+    const c = pick(colors);
+    const d = pick(directions);
+    const y = pick(yiList);
+    let j = pick(jiList);
+    while (j === y) j = pick(jiList);
+    const s = pick(songs);
+    const w = pick(wishes);
+    const q = pick(f.quotes);
+    const energyLevel = Math.max(1, Math.min(5, Math.round(f.weight < 5 ? 5 : f.weight < 12 ? 4 : f.weight < 20 ? 3 : 2)));
+    const stars = '★'.repeat(energyLevel) + '☆'.repeat(5-energyLevel);
+    const num = Math.floor(Math.random() * 99) + 1;
+    return {
+      level: f.level, emoji: f.emoji, levelColor: f.color, quote: q,
+      color: c, direction: d, yi: y, ji: j, song: s, wish: w,
+      energy: stars, number: num
+    };
+  }
+
+  // ===== DOM =====
+  const orb = document.getElementById('orb');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('closeBtn');
+  const redrawBtn = document.getElementById('redrawBtn');
+
+  const els = {
+    date: document.getElementById('dateText'),
+    levelTag: document.getElementById('levelTag'),
+    level: document.getElementById('levelText'),
+    emoji: document.getElementById('levelEmoji'),
+    quote: document.getElementById('levelQuote'),
+    swatch: document.getElementById('colorSwatch'),
+    color: document.getElementById('colorText'),
+    number: document.getElementById('numberText'),
+    direction: document.getElementById('directionText'),
+    energy: document.getElementById('energyText'),
+    yi: document.getElementById('yiText'),
+    ji: document.getElementById('jiText'),
+    song: document.getElementById('songText'),
+    wish: document.getElementById('wishText')
+  };
+
+  function setDate(){
+    const d = new Date();
+    const week = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+    els.date.textContent = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} · ${week}`;
+  }
+
+  function showFortune(){
+    const f = generateFortune();
+    els.levelTag.textContent = f.level.slice(0,2);
+    els.level.textContent = f.level;
+    els.emoji.textContent = f.emoji;
+    els.quote.textContent = f.quote;
+    els.swatch.style.background = f.color.hex;
+    els.swatch.style.color = f.color.hex;
+    els.color.textContent = f.color.name;
+    els.number.textContent = f.number;
+    els.direction.textContent = f.direction;
+    els.energy.textContent = f.energy;
+    els.yi.textContent = f.yi;
+    els.ji.textContent = f.ji;
+    els.song.textContent = f.song;
+    els.wish.textContent = f.wish;
+    setDate();
+  }
+
+  // ===== 粒子爆炸 =====
+  function burstParticles(x, y){
+    const colors = ['#f4c430', '#ffd9a8', '#ffb627', '#fff7d4', '#c8b6ff'];
+    const count = 24;
+    for (let i = 0; i < count; i++){
+      const p = document.createElement('div');
+      p.className = 'burst';
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.boxShadow = '0 0 10px ' + p.style.background;
+      document.body.appendChild(p);
+
+      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+      const dist = 80 + Math.random() * 100;
+      const dx = Math.cos(angle) * dist;
+      const dy = Math.sin(angle) * dist;
+      const duration = 700 + Math.random() * 400;
+
+      requestAnimationFrame(() => {
+        p.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.6, 0.4, 1), opacity ${duration}ms ease-out`;
+        p.style.transform = `translate(${dx}px, ${dy}px) scale(${0.3 + Math.random() * 0.5})`;
+        p.style.opacity = '0';
+      });
+
+      setTimeout(() => p.remove(), duration + 100);
+    }
+  }
+
+  // ===== 触发抽签 =====
+  let drawing = false;
+  function draw(e){
+    if (drawing) return;
+    drawing = true;
+
+    const rect = orb.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    const orbInner = orb.querySelector('.orb');
+    orbInner.classList.add('orb-shake');
+
+    setTimeout(() => burstParticles(cx, cy), 400);
+
+    setTimeout(() => {
+      orbInner.classList.remove('orb-shake');
+      showFortune();
+      overlay.classList.add('show');
+      drawing = false;
+    }, 700);
+  }
+
+  orb.addEventListener('click', draw);
+
+  closeBtn.addEventListener('click', () => {
+    overlay.classList.remove('show');
+  });
+
+  redrawBtn.addEventListener('click', () => {
+    overlay.classList.remove('show');
+    setTimeout(() => {
+      const rect = orb.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const orbInner = orb.querySelector('.orb');
+      orbInner.classList.add('orb-shake');
+      burstParticles(cx, cy);
+      setTimeout(() => {
+        orbInner.classList.remove('orb-shake');
+        showFortune();
+        overlay.classList.add('show');
+      }, 600);
+    }, 400);
+  });
+
+  // 点击遮罩外关闭
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+
+  // 漂浮颗粒装饰
+  function floatParticle(){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const startX = Math.random() * window.innerWidth;
+    const startY = window.innerHeight + 10;
+    p.style.left = startX + 'px';
+    p.style.top = startY + 'px';
+    p.style.opacity = (0.3 + Math.random() * 0.5).toString();
+    document.body.appendChild(p);
+
+    const drift = (Math.random() - 0.5) * 100;
+    const duration = 6000 + Math.random() * 4000;
+
+    requestAnimationFrame(() => {
+      p.style.transition = `transform ${duration}ms linear, opacity ${duration}ms ease-in`;
+      p.style.transform = `translate(${drift}px, -${window.innerHeight + 50}px)`;
+      p.style.opacity = '0';
+    });
+
+    setTimeout(() => p.remove(), duration + 100);
+  }
+  setInterval(floatParticle, 800);
+
+  // 初始化日期
+  setDate();
+})();
+</script>
+</body>
+</html>
